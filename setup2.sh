@@ -22,6 +22,7 @@ cat parted-script | parted /dev/loop0
 kpartx -d /dev/loop0
 kpartx -v -a ${RASPBIAN}
 ls /dev/mapper/
+ls /dev/loop*
 # check file system
 e2fsck -f /dev/mapper/loop0p2
 
