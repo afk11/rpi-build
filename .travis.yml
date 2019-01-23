@@ -1,0 +1,15 @@
+dist: xenial
+
+addons:
+  apt:
+    - qemu
+    - qemu-user-static 
+    - binfmt-support
+
+install:
+ - wget https://downloads.raspberrypi.org/raspbian_lite_latest
+ - unzip *.zip
+ - rm *.zip
+
+script:
+ - ./setup.sh
