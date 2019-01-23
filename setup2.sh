@@ -9,16 +9,16 @@
 # than doing the kpartx thing
 RASPBIAN=$(ls *.img)
 
+echo $RASPBIAN
 # extend raspbian image by 1gb
-dd if=/dev/zero bs=1M count=1024 >> ${RASPBIAN}
+
+dd if=/dev/zero bs=1M count=1024 >> $RASPBIAN
 
 # set up image as loop device
 kpartx -v -a ${RASPBIAN}
 
 #do the parted stuff, unmount kpartx, then mount again
-parted /dev/loop0
-    resizepart 2 -1s
-    quit
+cat parted-script | parted /dev/loop0
 kpartx -d /dev/loop0
 kpartx -v -a ${RASPBIAN}
 
