@@ -8,10 +8,10 @@
 # I found it to be much less of a pain in the ass and more reliable
 # than doing the kpartx thing
 RASPBIAN=$(ls *.img)
+MAP_PATH=/dev
+MOUNT_PATH=/mnt/raspbian
 
-echo $RASPBIAN
 # extend raspbian image by 1gb
-
 dd if=/dev/zero bs=1M count=1024 >> $RASPBIAN
 
 # set up image as loop device
@@ -21,38 +21,37 @@ kpartx -v -a ${RASPBIAN}
 cat parted-script | parted /dev/loop0
 kpartx -d /dev/loop0
 kpartx -v -a ${RASPBIAN}
-ls /dev/mapper/
-ls /dev/loop*
+
 # check file system
-e2fsck -f /dev/mapper/loop0p2
+e2fsck -f ${MAP_PATH}/loop0p2
 
 #expand partition
-resize2fs /dev/mapper/loop0p2
+resize2fs ${MAP_PATH}/loop0p2
 
 # mount partition
-mount -o rw /dev/mapper/loop0p2  /mnt/raspbian
-mount -o rw /dev/mapper/loop0p1 /mnt/raspbian/boot
+mount -o rw ${MAP_PATH}/loop0p2  ${MOUNT_PATH}
+mount -o rw ${MAP_PATH}/loop0p1 ${MOUNT_PATH}/boot
 
 # mount binds
-mount --bind /dev /mnt/raspbian/dev/
-mount --bind /sys /mnt/raspbian/sys/
-mount --bind /proc /mnt/raspbian/proc/
-mount --bind /dev/pts /mnt/raspbian/dev/pts
+mount --bind /dev ${MOUNT_PATH}/dev/
+mount --bind /sys ${MOUNT_PATH}/sys/
+mount --bind /proc ${MOUNT_PATH}/proc/
+mount --bind /dev/pts ${MOUNT_PATH}/dev/pts
 
 # ld.so.preload fix
-sed -i 's/^/#/g' /mnt/raspbian/etc/ld.so.preload
+sed -i 's/^/#/g' ${MOUNT_PATH}/etc/ld.so.preload
 
 # copy qemu binary
-cp /usr/bin/qemu-arm-static /mnt/raspbian/usr/bin/
+cp /usr/bin/qemu-arm-static ${MOUNT_PATH}/usr/bin/
 
 # chroot to raspbian
-chroot /mnt/raspbian /bin/bash -c "HELLO WORLD"
+chroot ${MOUNT_PATH} /bin/bash -c "HELLO WORLD"
 
 # revert ld.so.preload fix
-sed -i 's/^#//g' /mnt/raspbian/etc/ld.so.preload
+sed -i 's/^#//g' ${MOUNT_PATH}/etc/ld.so.preload
 
 # unmount everything
-umount /mnt/raspbian/{dev/pts,dev,sys,proc,boot,}
+umount ${MOUNT_PATH}/{dev/pts,dev,sys,proc,boot,}
 
 # unmount loop device
 kpartx -d /dev/loop0
