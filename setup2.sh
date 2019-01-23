@@ -21,7 +21,7 @@ kpartx -v -a ${RASPBIAN}
 cat parted-script | parted /dev/loop0
 kpartx -d /dev/loop0
 kpartx -v -a ${RASPBIAN}
-
+ls /dev/mapper/
 # check file system
 e2fsck -f /dev/mapper/loop0p2
 
@@ -45,9 +45,7 @@ sed -i 's/^/#/g' /mnt/raspbian/etc/ld.so.preload
 cp /usr/bin/qemu-arm-static /mnt/raspbian/usr/bin/
 
 # chroot to raspbian
-chroot /mnt/raspbian /bin/bash
-	# do stuff...
-	exit
+chroot /mnt/raspbian /bin/bash -c "HELLO WORLD"
 
 # revert ld.so.preload fix
 sed -i 's/^#//g' /mnt/raspbian/etc/ld.so.preload
