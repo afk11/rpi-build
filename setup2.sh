@@ -20,10 +20,10 @@ dd if=/dev/zero bs=1M count=1024 >> $RASPBIAN
 kpartx -v -a ${RASPBIAN}
 
 #do the parted stuff, unmount kpartx, then mount again
-cat parted-script | parted /dev/loop0
+#cat parted-script | parted /dev/loop0
 
-kpartx -d /dev/loop0
-kpartx -v -a ${RASPBIAN}
+#kpartx -d /dev/loop0
+#kpartx -v -a ${RASPBIAN}
 
 # check file system
 e2fsck -f ${MAP_PATH}/loop0p2
