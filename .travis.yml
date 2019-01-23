@@ -12,4 +12,4 @@ install:
  - rm *.zip
 
 script:
- - ./setup.sh
+ - ./setup2.sh
