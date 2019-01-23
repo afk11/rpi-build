@@ -9,4 +9,4 @@ install:
  - rm raspbian_lite_latest
 
 script:
- - ./setup2.sh
+ - sudo ./setup2.sh
