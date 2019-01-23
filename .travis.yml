@@ -1,7 +1,7 @@
 dist: xenial
 
 install:
- - sudo apt install -y qemu-system qemu-utils qemu qemu-user-static binfmt-support
+ - sudo apt install -y qemu
  - wget https://downloads.raspberrypi.org/raspbian_lite_latest
  - unzip *.zip
  - rm *.zip
