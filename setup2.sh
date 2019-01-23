@@ -11,6 +11,8 @@ RASPBIAN=$(ls *.img)
 MAP_PATH=/dev
 MOUNT_PATH=/mnt/raspbian
 
+ls /dev/loop*
+
 # extend raspbian image by 1gb
 dd if=/dev/zero bs=1M count=1024 >> $RASPBIAN
 
@@ -19,6 +21,7 @@ kpartx -v -a ${RASPBIAN}
 
 #do the parted stuff, unmount kpartx, then mount again
 cat parted-script | parted /dev/loop0
+
 kpartx -d /dev/loop0
 kpartx -v -a ${RASPBIAN}
 
