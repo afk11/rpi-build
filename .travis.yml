@@ -3,7 +3,7 @@ dist: xenial
 sudo: required
 
 install:
- - sudo apt-get install qemu qemu-user-static binfmt-support
+ - sudo apt-get install qemu qemu-user-static binfmt-support kpartx
  - wget https://downloads.raspberrypi.org/raspbian_lite_latest
  - unzip raspbian_lite_latest
  - rm raspbian_lite_latest
